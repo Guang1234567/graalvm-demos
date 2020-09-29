@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.graalvm.nativeimage</groupId>
@@ -10,8 +8,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <graalvm.version>20.0.0</graalvm.version>
+        <graalvm.version>20.2.0</graalvm.version>
         <jackson.version>2.10.1</jackson.version>
+        <!-- 指定 main 入口-->
+        <app.mainClass>example.runtime.ConfigureAtRunTime</app.mainClass>
+        <app.imageName>example</app.imageName>
+        <app.buildArgs>
+            --no-fallback -H:+PrintAnalysisCallTree -H:+PrintClassInitialization
+        </app.buildArgs>
     </properties>
 
     <dependencies>
@@ -56,9 +60,9 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                        <archive>
+                    <archive>
                         <manifest>
-                            <mainClass>example.runtime.ConfigureAtRunTime</mainClass>
+                            <mainClass>${app.mainClass}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -87,10 +91,8 @@
                 </executions>
                 <configuration>
                     <skip>false</skip>
-                    <imageName>example</imageName>
-                    <buildArgs>
-                        --no-fallback
-                    </buildArgs>
+                    <imageName>${app.imageName}</imageName>
+                    <buildArgs>${app.buildArgs}</buildArgs>
                 </configuration>
             </plugin>
         </plugins>
